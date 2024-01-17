@@ -63,7 +63,7 @@ export namespace EmployeeActions {
   >;
   export type editEmployeeRequestSuccessAction = Action<
     typeof Constants.editEmployeeRequestSuccessActionType,
-    EmployeeModel
+    any
   >;
   export type editEmployeeRequestFailureAction = Action<
     typeof Constants.editEmployeeRequestFailureActionType,
@@ -76,7 +76,7 @@ export namespace EmployeeActions {
     return ActionCreator(Constants.editEmployeeRequestActionType, P);
   }
   export function editEmployeeRequestSuccess(
-    P: EmployeeModel
+    P: EmployeeModel | any
   ): editEmployeeRequestSuccessAction {
     return ActionCreator(Constants.editEmployeeRequestSuccessActionType, P);
   }
@@ -121,7 +121,7 @@ export namespace EmployeeActions {
   >;
   export type deleteEmployeeRequestSuccessAction = Action<
     typeof Constants.deleteEmployeeRequestSuccessActionType,
-    null
+    number
   >;
   export type deleteEmployeeRequestFailureAction = Action<
     typeof Constants.deleteEmployeeRequestFailureActionType,
@@ -129,14 +129,14 @@ export namespace EmployeeActions {
   >;
 
   export function deleteEmployeeRequest(
-    P: number
+    P: any
   ): deleteEmployeeRequestAction {
     return ActionCreator(Constants.deleteEmployeeRequestActionType, P);
   }
-  export function deleteEmployeeRequestSuccess(): deleteEmployeeRequestSuccessAction {
+  export function deleteEmployeeRequestSuccess(P: any): deleteEmployeeRequestSuccessAction {
     return ActionCreator(
       Constants.deleteEmployeeRequestSuccessActionType,
-      null
+      P
     );
   }
   export function deleteEmployeeRequestFailure(): deleteEmployeeRequestFailureAction {

@@ -17,7 +17,6 @@ const initialState: RootState.EmployeeState = {
   success: false,
   departmentlistLoading: false,
   employeedetail: {} as EmployeeModel,
-  // EmployeeDetails: {} as EmployeeModel,
 };
 
 function EmployeeReducer(
@@ -113,7 +112,7 @@ function EmployeeReducer(
       isEmployeeUpdated: true,
       message: "Success",
       loading: false,
-      //data: state.data.map(user => user.userId === action.payload?.userId ? action.payload : user)
+      data: state.data.map(emp => emp.id === action.payload?.id ? {...action.payload, dob: new Date(action.payload.dob).toISOString() } : emp)
     };
   }
   function editEmployeeFailureAction(
@@ -140,6 +139,7 @@ function EmployeeReducer(
   ): EmployeeStateModel {
     return {
       ...state,
+      data: state.data.filter(x => x.id !== action.payload),
       isEmployeeDeleted: true,
       message: "Success",
       loading: false,

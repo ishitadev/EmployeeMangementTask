@@ -3,5 +3,5 @@ interface ConfigType {
 }
 
 export const config: ConfigType = {
-  root_url: process.env.REACT_APP_ROOT_URL || "https://localhost:7134",
+  root_url: process.env.SERVER_URL || "https://localhost:7134",
 };

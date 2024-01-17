@@ -1,9 +1,5 @@
 # README
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for?
-
 ### Employee Management System
 
 Welcome to the Employee Management System repository! This project provides a comprehensive solution for efficiently managing employee records, enabling users to seamlessly perform essential operations such as adding, updating, deleting, and viewing employees. The system also provides valuable insights by categorizing employees based on their respective departments.
@@ -25,14 +21,20 @@ Welcome to the Employee Management System repository! This project provides a co
 To get started with the Employee Management System, follow these steps:
 
 - Clone the Repository:
-- git clone https://github.com/ishitadev/EmployeeMangementTask-frontend
--
+
+  ```
+  git clone https://github.com/ishitadev/EmployeeMangementTask-frontend
+  ```
+
 - Install Dependencies:
-- cd emp-management-task
-- npm install
--
+  ```
+  cd emp-management-task
+  npm install
+  ```
 - Run the Application:
-- npm start
+  ```
+  npm start
+  ```
 
 ### Explore the Features:
 
@@ -44,7 +46,7 @@ Open your browser and navigate to http://localhost:3000 to start using the Emplo
 - Redux
 - Redux-saga
 - Typescript
-- Node version v16.16.0
+- Node version v16.14.1
 
 ### Requirements for running WCC Platform locally
 
@@ -55,7 +57,3 @@ Open your browser and navigate to http://localhost:3000 to start using the Emplo
 - Frontend: React with TypeScript
 - Backend: .NET Core (C#) for REST APIs
 - Database: Microsoft SQL Server
-
-### How do I get set up?
-
-- Start the backend c# server to run the APIs

@@ -2,10 +2,7 @@ import { all, put, takeEvery } from "redux-saga/effects";
 import { EmployeeActions } from "./Action";
 import { AxiosResponse } from "axios";
 import { ApiService } from "../../Utilities/api.service";
-// import memberData from "../../components/utilities/member.json";
 import * as Constants from "./Constant";
-// import { URLS } from "src/components/utilities/endpoints";
-
 function* asyncAddEmployee(data: EmployeeActions.addEmployeeRequestAction) {
   try {
     const response: AxiosResponse = yield ApiService.postData(
@@ -29,7 +26,7 @@ function* asyncEditEmployee(data: EmployeeActions.editEmployeeRequestAction) {
     );
     if (response.status === 200) {
       yield put(
-        EmployeeActions.editEmployeeRequestSuccess(response.data.result)
+        EmployeeActions.editEmployeeRequestSuccess(data.payload)
       );
     }
   } catch (error) {
@@ -63,10 +60,6 @@ function* asyncGetEmployeeDetails(
       `api/Employee/Details/${data.payload}`
     );
     if (response.status === 200) {
-      const finalData = {
-        ...response.data.result,
-        email: response.data.result.emailAddress, // this is wrongly passed
-      };
       yield put(
         EmployeeActions.getEmployeeDetailRequestSuccess(response.data.result)
       );
@@ -96,14 +89,14 @@ function* asyncGetDepartmentList(
 }
 
 function* asyncDeleteEmployee(
-  data: EmployeeActions.deleteEmployeeRequestAction
+  { payload }: EmployeeActions.deleteEmployeeRequestAction
 ) {
   try {
     const response: AxiosResponse = yield ApiService.deleteData(
-      `api/Employee?id=${data.payload}`
+      `api/Employee?id=${payload}`
     );
     if (response.status === 200) {
-      yield put(EmployeeActions.deleteEmployeeRequestSuccess());
+      yield put(EmployeeActions.deleteEmployeeRequestSuccess(payload));
     }
   } catch (error) {
     console.log(error);

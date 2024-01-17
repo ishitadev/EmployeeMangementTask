@@ -44,14 +44,11 @@ const EmployeeListing: React.FC = () => {
   }));
 
   useEffect(() => {
-    if (
-      !employeeSelector.department.length ||
-      (state && state.reloadEmployees)
-    ) {
-      employeeAction.getEmployeeListRequest();
+    if (!employeeSelector.department.length)
       employeeAction.getDepartmentListRequest();
-    }
-  }, [employeeAction, employeeSelector.isEmployeeDeleted]);
+    if (!employeeSelector.data.length || (state && state.reloadEmployees))
+      employeeAction.getEmployeeListRequest();
+  }, [employeeSelector.isEmployeeDeleted]);
 
   const handleAdd = () => {
     navigate(`/Add`);
@@ -78,7 +75,7 @@ const EmployeeListing: React.FC = () => {
           text: "Your record has been deleted.",
           icon: "success",
         });
-        navigate(`/`, { state: { reloadEmployees: true } });
+        navigate(`/`);
       }
     });
   };
@@ -137,10 +134,10 @@ const EmployeeListing: React.FC = () => {
                     searchTerm.length > 0
                       ? row.name
                           .toLowerCase()
-                          .includes(searchTerm.toLowerCase()) ||
+                          .includes(searchTerm.trim().toLowerCase()) ||
                         row.email
                           .toLowerCase()
-                          .includes(searchTerm.toLowerCase())
+                          .includes(searchTerm.trim().toLowerCase())
                       : true
                   )
                   .map((row: any) => (
@@ -165,6 +162,7 @@ const EmployeeListing: React.FC = () => {
                         />
                         <DeleteForever
                           className={style.iconstyle}
+                          style={{ color: "red" }}
                           onClick={() => handleDelete(row.id)}
                         />
                       </StyledTableCell>

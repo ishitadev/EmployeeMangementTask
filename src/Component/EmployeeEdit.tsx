@@ -57,17 +57,13 @@ const EmployeeEdit: React.FC = () => {
   ) => {
     const { name, value } = e.target;
 
-    if (name === "name" || name === "email") {
-      setEmployee((prevEmployee) => ({
-        ...prevEmployee,
-        [name]: value,
-      }));
-    } else if (name === "dob") {
-      setEmployee((prevEmployee) => ({
-        ...prevEmployee,
-        dob: new Date(moment(value, "YYYY-MM-DD").toISOString()),
-      }));
-    }
+    setEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      [name as keyof EmployeeModel]:
+        name === "dob"
+          ? new Date(moment(value, "YYYY-MM-DD").toISOString())
+          : value,
+    }));
   };
 
   useEffect(() => {
@@ -84,7 +80,7 @@ const EmployeeEdit: React.FC = () => {
       return setErrorState(validateRes);
     }
     employeeAction.editEmployeeRequest(employee);
-    navigate("/", { state: { reloadEmployees: true } });
+    navigate("/");
   };
 
   const onBackClick = () => {
