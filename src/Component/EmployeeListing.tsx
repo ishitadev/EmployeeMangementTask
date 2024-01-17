@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { useEmployeeActions } from "../Store/Employee/Action";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -18,9 +17,8 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Add, BorderColor, DeleteForever } from "@mui/icons-material";
-
 import styles from "./style";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,10 +30,7 @@ const EmployeeListing: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const employeeAction = useEmployeeActions(dispatch);
-
-  // const filteredData: EmployeeModel[] = data.filter((item) =>
-  //   item.title.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
+  const { state } = useLocation();
 
   const style = styles();
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -49,28 +44,14 @@ const EmployeeListing: React.FC = () => {
   }));
 
   useEffect(() => {
-    if (employeeSelector.isEmployeeDeleted) {
+    if (
+      !employeeSelector.department.length ||
+      (state && state.reloadEmployees)
+    ) {
+      employeeAction.getEmployeeListRequest();
+      employeeAction.getDepartmentListRequest();
     }
-    employeeAction.getEmployeeListRequest();
-    employeeAction.getDepartmentListRequest();
-  }, [employeeSelector.isEmployeeDeleted]);
-
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [selectedRowId, setSelectedRowId] = React.useState<number | null>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (
-    id: number,
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedRowId(id);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-    setSelectedRowId(null);
-  };
+  }, [employeeAction, employeeSelector.isEmployeeDeleted]);
 
   const handleAdd = () => {
     navigate(`/Add`);
@@ -78,7 +59,6 @@ const EmployeeListing: React.FC = () => {
 
   const handleEdit = (id: number) => {
     navigate(`/Edit/${id}`);
-    handleClose();
   };
 
   const handleDelete = (id: number) => {
@@ -98,10 +78,9 @@ const EmployeeListing: React.FC = () => {
           text: "Your record has been deleted.",
           icon: "success",
         });
-        navigate(`/`);
+        navigate(`/`, { state: { reloadEmployees: true } });
       }
     });
-    handleClose();
   };
 
   return (
@@ -156,38 +135,40 @@ const EmployeeListing: React.FC = () => {
                 employeeSelector.data
                   .filter((row: { name: string; email: string }) =>
                     searchTerm.length > 0
-                      ? row.name.includes(searchTerm) ||
-                        row.email.includes(searchTerm)
+                      ? row.name
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase()) ||
+                        row.email
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase())
                       : true
                   )
                   .map((row: any) => (
-                    <>
-                      <TableRow key={row.id} className="me-3">
-                        <StyledTableCell component="th" scope="row">
-                          {row?.name}
-                        </StyledTableCell>
-                        <StyledTableCell>{row?.email}</StyledTableCell>
-                        <StyledTableCell>{row?.dob}</StyledTableCell>
-                        <StyledTableCell>
-                          {
-                            employeeSelector.department.find(
-                              (ele: DepartmentModel) =>
-                                ele.id === row?.departmentId
-                            )?.name
-                          }
-                        </StyledTableCell>
-                        <StyledTableCell>
-                          <BorderColor
-                            className={style.iconstyle}
-                            onClick={() => handleEdit(row.id)}
-                          />
-                          <DeleteForever
-                            className={style.iconstyle}
-                            onClick={() => handleDelete(row.id)}
-                          />
-                        </StyledTableCell>
-                      </TableRow>
-                    </>
+                    <TableRow key={row.id} className="me-3">
+                      <StyledTableCell component="th" scope="row">
+                        {row?.name}
+                      </StyledTableCell>
+                      <StyledTableCell>{row?.email}</StyledTableCell>
+                      <StyledTableCell>{row?.dob}</StyledTableCell>
+                      <StyledTableCell>
+                        {
+                          employeeSelector.department.find(
+                            (ele: DepartmentModel) =>
+                              ele.id === row?.departmentId
+                          )?.name
+                        }
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        <BorderColor
+                          className={style.iconstyle}
+                          onClick={() => handleEdit(row.id)}
+                        />
+                        <DeleteForever
+                          className={style.iconstyle}
+                          onClick={() => handleDelete(row.id)}
+                        />
+                      </StyledTableCell>
+                    </TableRow>
                   ))}
             </TableBody>
           </Table>

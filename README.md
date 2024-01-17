@@ -1,46 +1,61 @@
-# Getting Started with Create React App
+# README
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This README would normally document whatever steps are necessary to get your application up and running.
 
-## Available Scripts
+### What is this repository for?
 
-In the project directory, you can run:
+### Employee Management System
 
-### `npm start`
+Welcome to the Employee Management System repository! This project provides a comprehensive solution for efficiently managing employee records, enabling users to seamlessly perform essential operations such as adding, updating, deleting, and viewing employees. The system also provides valuable insights by categorizing employees based on their respective departments.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Key Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Add Employees: Easily add new employees to the system by providing relevant details, including department information.
 
-### `npm test`
+- Update Information: Keep employee records up-to-date with the ability to modify their details as needed.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Delete Employees: Streamlined process for removing employee records when necessary.
 
-### `npm run build`
+- View Employee List: Access a comprehensive list of all employees, complete with their respective department affiliations.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Departmental Information: Gain insights into the organizational structure by understanding which department each employee belongs to.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Getting Started
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+To get started with the Employee Management System, follow these steps:
 
-### `npm run eject`
+- Clone the Repository:
+- git clone https://github.com/ishitadev/EmployeeMangementTask-frontend
+-
+- Install Dependencies:
+- cd emp-management-task
+- npm install --legacy-peer-deps
+-
+- Run the Application:
+- npm start
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Explore the Features:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Open your browser and navigate to http://localhost:3000 to start using the Employee Management System.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Signficant Dependencies / Libaries
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- React JS
+- Redux
+- Redux-saga
+- Typescript
+- Node version v16.16.0
 
-## Learn More
+### Requirements for running WCC Platform locally
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Visual Studio Code
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Technologies Used
+
+- Frontend: React with TypeScript
+- Backend: .NET Core (C#) for REST APIs
+- Database: Microsoft SQL Server
+
+### How do I get set up?
+
+- Start the backend c# server to run the APIs

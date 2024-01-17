@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import {
   TextField,
   Button,
@@ -20,7 +20,7 @@ import { useEmployeeActions } from "../Store/Employee/Action";
 import validate from "../Utilities/validate";
 import { ErrorType } from "../Utilities/validate";
 
-const AddEmployeePage: React.FC = () => {
+const EmployeeAdd: React.FC = () => {
   const [employee, setEmployee] = useState<EmployeeModel>({
     id: 0,
     name: "",
@@ -35,62 +35,39 @@ const AddEmployeePage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const employeeAction = useEmployeeActions(dispatch);
-  const handleNameChange = (
-    e: React.ChangeEvent<
+  const handleChange = (
+    e: ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | { name?: string; value: any }
     >
   ) => {
     const { name, value } = e.target;
     setEmployee((prevEmployee) => ({
       ...prevEmployee,
-      name: value,
-    }));
-  };
-
-  const handleEmailChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | { name?: string; value: any }
-    >
-  ) => {
-    const { name, value } = e.target;
-    setEmployee((prevEmployee) => ({
-      ...prevEmployee,
-      email: value,
-    }));
-  };
-  const handleDateChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | { name?: string; value: any }
-    >
-  ) => {
-    const { name, value } = e.target;
-    setEmployee((prevEmployee) => ({
-      ...prevEmployee,
-      dob: new Date(value),
+      [name as keyof EmployeeModel]: name === "dob" ? new Date(value) : value,
     }));
   };
 
   useEffect(() => {
-    employeeAction.getDepartmentListRequest();
-  }, []);
+    if (!employeeSelector.department.length) {
+      employeeAction.getDepartmentListRequest();
+    }
+  }, [employeeAction, employeeSelector.department]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validateRes: ErrorType = validate(employee);
 
-
-    if (validateRes?.name || validateRes?.email) {
-      setErrorState(validateRes);
-    } else {
-      employeeAction.addEmployeeRequest(employee);
-      navigate("/");
+    if (Object.keys(validateRes).length) {
+      return setErrorState(validateRes);
     }
+    employeeAction.addEmployeeRequest(employee);
+    navigate("/", { state: { reloadEmployees: true } });
   };
 
   const onBackClick = () => {
     navigate("/");
   };
-
+  
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -112,7 +89,7 @@ const AddEmployeePage: React.FC = () => {
           name="name"
           fullWidth
           value={employee.name}
-          onChange={handleNameChange}
+          onChange={handleChange}
           required
           helperText={errorState?.name}
           error={!!errorState?.name}
@@ -126,7 +103,7 @@ const AddEmployeePage: React.FC = () => {
           name="email"
           fullWidth
           value={employee.email}
-          onChange={handleEmailChange}
+          onChange={handleChange}
           required
           helperText={errorState?.email}
           error={!!errorState?.email}
@@ -138,7 +115,7 @@ const AddEmployeePage: React.FC = () => {
           margin="normal"
           name="dob"
           fullWidth
-          onChange={handleDateChange}
+          onChange={handleChange}
           InputLabelProps={{
             shrink: true,
           }}
@@ -188,4 +165,4 @@ const AddEmployeePage: React.FC = () => {
   );
 };
 
-export default AddEmployeePage;
+export default EmployeeAdd;

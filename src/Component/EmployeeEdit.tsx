@@ -21,21 +21,6 @@ import validate from "../Utilities/validate";
 import { ArrowBack } from "@mui/icons-material";
 import moment from "moment";
 
-const month = [
-  "01",
-  "02",
-  "03",
-  "04",
-  "05",
-  "06",
-  "07",
-  "08",
-  "09",
-  "10",
-  "11",
-  "12",
-];
-
 const EmployeeEdit: React.FC = () => {
   const employeeSelector = useSelector((state: any) => state.employee);
   const navigate = useNavigate();
@@ -58,70 +43,53 @@ const EmployeeEdit: React.FC = () => {
 
   useEffect(() => {
     if (Object.keys(employeeSelector.employeedetail || {}).length) {
-      console.log(employeeSelector.employeedetail);
       setEmployee({
         ...employeeSelector.employeedetail,
         dob: new Date(employeeSelector.employeedetail.dob),
       });
     }
   }, [employeeSelector.employeedetail]);
-  const handleNameChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | { name?: string; value: any }
-    >
-  ) => {
-    const { name, value } = e.target;
-    setEmployee((prevEmployee) => ({
-      ...prevEmployee,
-      name: value,
-    }));
-  };
 
-  const handleEmailChange = (
+  const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | { name?: string; value: any }
     >
   ) => {
     const { name, value } = e.target;
-    setEmployee((prevEmployee) => ({
-      ...prevEmployee,
-      email: value,
-    }));
-  };
-  const handleDateChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | { name?: string; value: string }
-    >
-  ) => {
-    const { name, value } = e.target;
-    console.log(value, new Date(moment(value, "YYYY-MM-DD").toISOString()));
-    setEmployee((prevEmployee) => ({
-      ...prevEmployee,
-      dob: new Date(moment(value, "YYYY-MM-DD").toISOString()),
-    }));
+
+    if (name === "name" || name === "email") {
+      setEmployee((prevEmployee) => ({
+        ...prevEmployee,
+        [name]: value,
+      }));
+    } else if (name === "dob") {
+      setEmployee((prevEmployee) => ({
+        ...prevEmployee,
+        dob: new Date(moment(value, "YYYY-MM-DD").toISOString()),
+      }));
+    }
   };
 
   useEffect(() => {
-    employeeAction.getDepartmentListRequest();
-  }, []);
+    if (!employeeSelector.department.length) {
+      employeeAction.getDepartmentListRequest();
+    }
+  }, [employeeAction, employeeSelector.department]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validateRes: ErrorType = validate(employee);
 
-    if (validateRes?.name || validateRes?.email) {
-      setErrorState(validateRes);
-    } else {
-      employeeAction.editEmployeeRequest(employee);
-      navigate("/");
+    if (Object.keys(validateRes).length) {
+      return setErrorState(validateRes);
     }
+    employeeAction.editEmployeeRequest(employee);
+    navigate("/", { state: { reloadEmployees: true } });
   };
 
   const onBackClick = () => {
     navigate("/");
   };
-
-  //   console.log({ employee });
 
   return (
     <>
@@ -144,7 +112,7 @@ const EmployeeEdit: React.FC = () => {
           name="name"
           fullWidth
           value={employee.name}
-          onChange={handleNameChange}
+          onChange={handleInputChange}
           required
           helperText={errorState?.name}
           error={!!errorState?.name}
@@ -157,7 +125,7 @@ const EmployeeEdit: React.FC = () => {
           name="email"
           fullWidth
           value={employee.email}
-          onChange={handleEmailChange}
+          onChange={handleInputChange}
           required
         />
         <TextField
@@ -168,7 +136,7 @@ const EmployeeEdit: React.FC = () => {
           name="dob"
           value={moment(employee.dob).format("YYYY-MM-DD")}
           fullWidth
-          onChange={handleDateChange}
+          onChange={handleInputChange}
           InputLabelProps={{
             shrink: true,
           }}
