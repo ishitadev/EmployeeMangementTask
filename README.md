@@ -48,7 +48,7 @@ Open your browser and navigate to http://localhost:3000 to start using the Emplo
 - Typescript
 - Node version v16.14.1
 
-### Requirements for running WCC Platform locally
+### Requirements for running locally
 
 - Visual Studio Code
 
