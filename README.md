@@ -29,7 +29,7 @@ To get started with the Employee Management System, follow these steps:
 -
 - Install Dependencies:
 - cd emp-management-task
-- npm install --legacy-peer-deps
+- npm install
 -
 - Run the Application:
 - npm start
